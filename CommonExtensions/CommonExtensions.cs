@@ -11,7 +11,6 @@
     using Reflection;
 
     using Runtime.CompilerServices;
-
     using Text;
     using Text.RegularExpressions;
 
@@ -50,8 +49,8 @@
         /// An extension function to work like the extend method of javascript. It takes the object and merge with oder, but only if the property of the other object has value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="target">The target<see cref="T" /></param>
-        /// <param name="source">The source<see cref="T" /></param>
+        /// <param name="target">The target</param>
+        /// <param name="source">The source</param>
         /// <returns>
         /// The <see cref="T" />
         /// </returns>
@@ -217,11 +216,13 @@
         public static TResult IfIs<T, TResult>(this object target, Func<T, TResult> method)
             where T : class
         {
-            return target switch
+            switch (target)
             {
-                T cast => method(cast),
-                _ => default,
-            };
+                case T cast:
+                    return method(cast);
+                default:
+                    return default;
+            }
         }
 
         /// <summary>
@@ -232,10 +233,7 @@
         /// <param name="source">The source<see cref="T"/></param>
         /// <param name="selector">The selector<see cref="Func{T, TInner}"/></param>
         /// <returns>The selected value when source is not null; null otherwise.</returns>
-        public static TInner IfNotNull<T, TInner>(this T source, Func<T, TInner> selector)
-        {
-            return source != null ? selector(source) : default;
-        }
+        public static TInner IfNotNull<T, TInner>(this T source, Func<T, TInner> selector) => source != null ? selector(source) : default;
 
         /// <summary>
         /// ImplementsInterfaces(List<Type> types)
@@ -252,7 +250,7 @@
                 return new List<Type>();
             }
 
-            static bool Filter(Type typeObj, object criteriaObj) => typeObj.ToString() == criteriaObj.ToString();
+            bool Filter(Type typeObj, object criteriaObj) => typeObj.ToString() == criteriaObj.ToString();
 
             Type Func(Type t) { return obj.GetType().FindInterfaces(Filter, t.FullName).Length > 0 ? t : null; }
 
@@ -265,15 +263,7 @@
         /// <param name="value">The value<see cref="string"/></param>
         /// <param name="stringValues">Array of string values to compare</param>
         /// <returns>Return true if any string value matches</returns>
-        public static bool In(this string value, params string[] stringValues)
-        {
-            foreach (var _ in stringValues.Where(otherValue => string.Compare(value, otherValue) == 0).Select(otherValue => new { }))
-            {
-                return true;
-            }
-
-            return false;
-        }
+        public static bool In(this string value, params string[] stringValues) => stringValues.Where(otherValue => string.CompareOrdinal(value, otherValue) == 0).Select(otherValue => new { }).Any();
 
         /// <summary>
         /// Allows you to compare a value to a list of values analogous to the 'In' statement in sql.
@@ -282,7 +272,10 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source<see cref="T"/></param>
-        /// <param name="list">The list<see cref="T[]"/></param>
+        /// <param name="list">The list<see>
+        ///         <cref>T[]</cref>
+        ///     </see>
+        /// </param>
         /// <returns>The <see cref="bool"/></returns>
         public static bool In<T>(this T source, params T[] list)
         {
@@ -314,20 +307,14 @@
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        public static bool IsInt(this string input)
-        {
-            return input.IsSet() && int.TryParse(input, out _);
-        }
+        public static bool IsInt(this string input) => input.IsSet() && int.TryParse(input, out _);
 
         /// <summary>
         /// Check if Input string is not null or whitespace
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        public static bool IsNotNull(this string input)
-        {
-            return !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
-        }
+        public static bool IsNotNull(this string input) => !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
 
         /// <summary>
         /// Check  IsNull
@@ -338,32 +325,10 @@
         [DebuggerStepThrough]
         public static bool IsNull<T>(this T me)
         {
-            if (me is INullable && (me as INullable).IsNull)
-            {
-                return true;
-            }
-
             Type type = typeof(T);
-            if (type.IsValueType)
-            {
-                if (!ReferenceEquals(Nullable.GetUnderlyingType(type), null) && me.GetHashCode() == 0)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if (ReferenceEquals(me, null))
-                {
-                    return true;
-                }
-
-                if (Convert.IsDBNull(me))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return me is INullable nullable && nullable.IsNull || (type.IsValueType
+                       ? !ReferenceEquals(Nullable.GetUnderlyingType(type), null) && me.GetHashCode() == 0
+                       : ReferenceEquals(me, null) || Convert.IsDBNull(me));
         }
 
         /// <summary>
@@ -373,20 +338,14 @@
         /// <param name="me">Struct need to check is null<see cref="T"/></param>
         /// <returns>True or False <see cref="bool"/></returns>
         [DebuggerStepThrough]
-        public static bool IsNull<T>(this T? me) where T : struct
-        {
-            return !me.HasValue;
-        }
+        public static bool IsNull<T>(this T? me) where T : struct => !me.HasValue;
 
         /// <summary>
         /// Check if string is null or empty 
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>True or False <see cref="bool"/></returns>
-        public static bool IsSet(this string input)
-        {
-            return !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
-        }
+        public static bool IsSet(this string input) => !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
 
         /// <summary>
         /// Returns characters from left of specified length
@@ -468,7 +427,10 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="val">The val<see cref="T"/></param>
-        /// <param name="predicate">The predicate<see cref="Func{T, bool}"/></param>
+        /// <param name="predicate">The predicate<see>
+        ///         <cref>Func{T, bool}</cref>
+        ///     </see>
+        /// </param>
         /// <param name="exceptionFunc">The exceptionFunc<see cref="Func{Exception}"/></param>
         /// <returns>T object to throw exception <see cref="T"/></returns>
         public static T ThrowIf<T>(this T val, Func<T, bool> predicate, Func<Exception> exceptionFunc)
@@ -532,7 +494,7 @@
         /// <returns></returns>
         public static string ToLogString(this Exception ex, string additionalMessage)
         {
-            StringBuilder msg = new StringBuilder();
+            var msg = new StringBuilder();
 
             if (additionalMessage.IsSet())
             {
@@ -540,61 +502,57 @@
                 msg.Append(Environment.NewLine);
             }
 
-            if (!ex.IsNull())
+            if (ex.IsNull()) return msg.ToString();
+            Exception orgEx = ex;
+
+            msg.Append("Exception:");
+            msg.Append(Environment.NewLine);
+            while (!orgEx.IsNull())
             {
-                Exception orgEx = ex;
-
-                msg.Append("Exception:");
+                msg.Append(orgEx?.Message);
                 msg.Append(Environment.NewLine);
-                while (!orgEx.IsNull())
-                {
-                    msg.Append(orgEx.Message);
-                    msg.Append(Environment.NewLine);
-                    orgEx = orgEx.InnerException;
-                }
+                orgEx = orgEx.InnerException;
+            }
 
-                if (!ex.Data.IsNull())
+            if (!ex.Data.IsNull())
+            {
+                foreach (var i in ex.Data)
                 {
-                    foreach (object i in ex.Data)
-                    {
-                        msg.Append("Data :");
-                        msg.Append(i);
-                        msg.Append(Environment.NewLine);
-                    }
-                }
-
-                if (!ex.StackTrace.IsNull())
-                {
-                    msg.Append("StackTrace:");
+                    msg.Append("Data :");
+                    msg.Append(i);
                     msg.Append(Environment.NewLine);
-                    msg.Append(ex.StackTrace);
-                    msg.Append(Environment.NewLine);
-                }
-
-                if (!ex.Source.IsNull())
-                {
-                    msg.Append("Source:");
-                    msg.Append(Environment.NewLine);
-                    msg.Append(ex.Source);
-                    msg.Append(Environment.NewLine);
-                }
-
-                if (!ex.TargetSite.IsNull())
-                {
-                    msg.Append("TargetSite:");
-                    msg.Append(Environment.NewLine);
-                    msg.Append(ex.TargetSite);
-                    msg.Append(Environment.NewLine);
-                }
-
-                Exception baseException = ex.GetBaseException();
-                if (!baseException.IsNull())
-                {
-                    msg.Append("BaseException:");
-                    msg.Append(Environment.NewLine);
-                    msg.Append(ex.GetBaseException());
                 }
             }
+
+            if (!ex.StackTrace.IsNull())
+            {
+                msg.Append("StackTrace:");
+                msg.Append(Environment.NewLine);
+                msg.Append(ex.StackTrace);
+                msg.Append(Environment.NewLine);
+            }
+
+            if (!ex.Source.IsNull())
+            {
+                msg.Append("Source:");
+                msg.Append(Environment.NewLine);
+                msg.Append(ex.Source);
+                msg.Append(Environment.NewLine);
+            }
+
+            if (!ex.TargetSite.IsNull())
+            {
+                msg.Append("TargetSite:");
+                msg.Append(Environment.NewLine);
+                msg.Append(ex.TargetSite);
+                msg.Append(Environment.NewLine);
+            }
+
+            Exception baseException = ex.GetBaseException();
+            if (baseException.IsNull()) return msg.ToString();
+            msg.Append("BaseException:");
+            msg.Append(Environment.NewLine);
+            msg.Append(ex.GetBaseException());
             return msg.ToString();
         }
 
