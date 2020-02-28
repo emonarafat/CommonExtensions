@@ -1,6 +1,5 @@
 <a name='assembly'></a>
 # System.Common.Extensions
-
 Common C# Extensions for Developers
 ## Contents
 
@@ -692,7 +691,7 @@ T object to throw exception [](#!-T 'T')
 
 ##### Summary
 
-The ToDecimal
+Converts string to  ToDecimal
 
 ##### Returns
 
@@ -709,7 +708,7 @@ The [Decimal](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-
 
 ##### Summary
 
-The ToDouble
+Converts string to  ToDouble
 
 ##### Returns
 
@@ -814,4 +813,3 @@ The [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-U
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The value[String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |
-
