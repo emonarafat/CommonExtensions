@@ -1,45 +1,60 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-namespace System
+﻿namespace System
 {
+    using Collections.Generic;
+
+    using Data.SqlTypes;
+
+    using Diagnostics;
+
+    using Linq;
+
+    using Reflection;
+
+    using Runtime.CompilerServices;
+
+    using Text;
+    using Text.RegularExpressions;
+
+    using Threading;
+    using Threading.Tasks;
+
+    /// <summary>
+    /// Defines the <see cref="CommonExtensions" />
+    /// </summary>
     public static class CommonExtensions
     {
         /// <summary>
         /// Make Readable string Dirty
         /// </summary>
-        /// <param name="humanized">The humanized<see cref="string"/></param>
-        /// <param name="delimeter">The delimeter<see cref="string"/></param>
-        /// <returns>The <see cref="string"/></returns>
-        public static string DeHumanize(this string humanized, string delimeter = "") => humanized.Replace(" ", delimeter);
+        /// <param name="humanized"> humanized string<see cref="string" /></param>
+        /// <param name="delimiter"> delimiter <see cref="string" /></param>
+        /// <returns>
+        /// The <see cref="string" />
+        /// </returns>
+        public static string DeHumanize(this string humanized, string delimiter = "") => humanized.Replace(" ", delimiter);
 
         /// <summary>
-        /// Provides a Distinct method that takes a key selector lambda as parameter. 
-        /// The .net framework only provides a Distinct method that takes an instance 
-        /// of an implementation of IEqualityComparer<T> where the standard parameterless 
+        /// Provides a Distinct method that takes a key selector lambda as parameter.
+        /// The .net framework only provides a Distinct method that takes an instance
+        /// of an implementation of IEqualityComparer where the standard parameter less
         /// Distinct that uses the default equality comparer doesn't suffice.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TKey"></typeparam>
-        /// <param name="@this">The this<see cref="IEnumerable{T}"/></param>
-        /// <param name="keySelector"></param>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <param name="this">IEnumerable.</param>
+        /// <param name="keySelector"> key selector.</param>
         /// <returns></returns>
         public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> @this, Func<T, TKey> keySelector) => @this.GroupBy(keySelector).Select(grps => grps).Select(e => e.First());
 
         /// <summary>
-        /// An extenssion function to work like the extend method of javascript. It takes the object and merge with oder, but only if the property of the other object has value.
+        /// An extension function to work like the extend method of javascript. It takes the object and merge with oder, but only if the property of the other object has value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="target">The target<see cref="T"/></param>
-        /// <param name="source">The source<see cref="T"/></param>
-        /// <returns>The <see cref="T"/></returns>
+        /// <param name="target">The target<see cref="T" /></param>
+        /// <param name="source">The source<see cref="T" /></param>
+        /// <returns>
+        /// The <see cref="T" />
+        /// </returns>
         public static T Extend<T>(this T target, T source) where T : class
         {
             IEnumerable<PropertyInfo> properties =
@@ -237,13 +252,11 @@ namespace System
                 return new List<Type>();
             }
 
-            TypeFilter filter = new System.Reflection.TypeFilter(
-                (Type typeObj, object criteriaObj) => { return typeObj.ToString() == criteriaObj.ToString() ? true : false; }
-                );
+            static bool Filter(Type typeObj, object criteriaObj) => typeObj.ToString() == criteriaObj.ToString();
 
-            Type func(Type t) { return obj.GetType().FindInterfaces(filter, t.FullName).Length > 0 ? t : null; }
+            Type Func(Type t) { return obj.GetType().FindInterfaces(Filter, t.FullName).Length > 0 ? t : null; }
 
-            return (from i in interfaces select func(i)).Where(t => t == null ? false : true).ToList();
+            return (from i in interfaces select Func(i)).Where(t => t != null).ToList();
         }
 
         /// <summary>
@@ -254,9 +267,10 @@ namespace System
         /// <returns>Return true if any string value matches</returns>
         public static bool In(this string value, params string[] stringValues)
         {
-            foreach (string otherValue in stringValues)
-                if (string.Compare(value, otherValue) == 0)
-                    return true;
+            foreach (var _ in stringValues.Where(otherValue => string.Compare(value, otherValue) == 0).Select(otherValue => new { }))
+            {
+                return true;
+            }
 
             return false;
         }
@@ -276,7 +290,7 @@ namespace System
         }
 
         /// <summary>
-        /// The IsDecimal
+        /// Check string  IsDecimal
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
@@ -286,7 +300,7 @@ namespace System
         }
 
         /// <summary>
-        /// The IsDouble
+        /// Check string IsDouble
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
@@ -296,7 +310,7 @@ namespace System
         }
 
         /// <summary>
-        /// The IsInt
+        /// Check string IsInt
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
@@ -316,7 +330,7 @@ namespace System
         }
 
         /// <summary>
-        /// The IsNull
+        /// Check  IsNull
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="me">The me<see cref="T"/></param>
@@ -353,11 +367,11 @@ namespace System
         }
 
         /// <summary>
-        /// The IsNull
+        /// Check IsNull
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="me">The me<see cref="T?"/></param>
-        /// <returns>The <see cref="bool"/></returns>
+        /// <typeparam name="T">Where T is struct</typeparam>
+        /// <param name="me">Struct need to check is null<see cref="T"/></param>
+        /// <returns>True or False <see cref="bool"/></returns>
         [DebuggerStepThrough]
         public static bool IsNull<T>(this T? me) where T : struct
         {
@@ -365,10 +379,10 @@ namespace System
         }
 
         /// <summary>
-        /// The IsSet
+        /// Check if string is null or empty 
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
-        /// <returns>The <see cref="bool"/></returns>
+        /// <returns>True or False <see cref="bool"/></returns>
         public static bool IsSet(this string input)
         {
             return !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
@@ -378,7 +392,7 @@ namespace System
         /// Returns characters from left of specified length
         /// </summary>
         /// <param name="value">String value</param>
-        /// <param name="length">Max number of charaters to return</param>
+        /// <param name="length">Max number of characters to return</param>
         /// <returns>Returns string from left</returns>
         public static string Left(this string value, int length)
         {
@@ -443,7 +457,7 @@ namespace System
         /// <param name="action">The action<see cref="Action{T}"/></param>
         public static void SpinThread<T>(this T parms, Action<T> action)
         {
-            new Threading.Thread(new System.Threading.ParameterizedThreadStart(p => action((T)p)))
+            new Thread(p => action((T)p))
             {
                 IsBackground = true
             }.Start(parms);
@@ -468,7 +482,7 @@ namespace System
         }
 
         /// <summary>
-        /// The ToDecimal
+        /// Converts string to  ToDecimal
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="decimal"/></returns>
@@ -478,7 +492,7 @@ namespace System
         }
 
         /// <summary>
-        /// The ToDouble
+        /// Converts string to  ToDouble
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="double"/></returns>
@@ -528,77 +542,71 @@ namespace System
 
             if (!ex.IsNull())
             {
-                try
+                Exception orgEx = ex;
+
+                msg.Append("Exception:");
+                msg.Append(Environment.NewLine);
+                while (!orgEx.IsNull())
                 {
-                    Exception orgEx = ex;
-
-                    msg.Append("Exception:");
+                    msg.Append(orgEx.Message);
                     msg.Append(Environment.NewLine);
-                    while (!orgEx.IsNull())
-                    {
-                        msg.Append(orgEx.Message);
-                        msg.Append(Environment.NewLine);
-                        orgEx = orgEx.InnerException;
-                    }
+                    orgEx = orgEx.InnerException;
+                }
 
-                    if (!ex.Data.IsNull())
+                if (!ex.Data.IsNull())
+                {
+                    foreach (object i in ex.Data)
                     {
-                        foreach (object i in ex.Data)
-                        {
-                            msg.Append("Data :");
-                            msg.Append(i.ToString());
-                            msg.Append(Environment.NewLine);
-                        }
-                    }
-
-                    if (!ex.StackTrace.IsNull())
-                    {
-                        msg.Append("StackTrace:");
+                        msg.Append("Data :");
+                        msg.Append(i);
                         msg.Append(Environment.NewLine);
-                        msg.Append(ex.StackTrace.ToString());
-                        msg.Append(Environment.NewLine);
-                    }
-
-                    if (!ex.Source.IsNull())
-                    {
-                        msg.Append("Source:");
-                        msg.Append(Environment.NewLine);
-                        msg.Append(ex.Source);
-                        msg.Append(Environment.NewLine);
-                    }
-
-                    if (!ex.TargetSite.IsNull())
-                    {
-                        msg.Append("TargetSite:");
-                        msg.Append(Environment.NewLine);
-                        msg.Append(ex.TargetSite.ToString());
-                        msg.Append(Environment.NewLine);
-                    }
-
-                    Exception baseException = ex.GetBaseException();
-                    if (!baseException.IsNull())
-                    {
-                        msg.Append("BaseException:");
-                        msg.Append(Environment.NewLine);
-                        msg.Append(ex.GetBaseException());
                     }
                 }
-                finally
+
+                if (!ex.StackTrace.IsNull())
                 {
+                    msg.Append("StackTrace:");
+                    msg.Append(Environment.NewLine);
+                    msg.Append(ex.StackTrace);
+                    msg.Append(Environment.NewLine);
+                }
+
+                if (!ex.Source.IsNull())
+                {
+                    msg.Append("Source:");
+                    msg.Append(Environment.NewLine);
+                    msg.Append(ex.Source);
+                    msg.Append(Environment.NewLine);
+                }
+
+                if (!ex.TargetSite.IsNull())
+                {
+                    msg.Append("TargetSite:");
+                    msg.Append(Environment.NewLine);
+                    msg.Append(ex.TargetSite);
+                    msg.Append(Environment.NewLine);
+                }
+
+                Exception baseException = ex.GetBaseException();
+                if (!baseException.IsNull())
+                {
+                    msg.Append("BaseException:");
+                    msg.Append(Environment.NewLine);
+                    msg.Append(ex.GetBaseException());
                 }
             }
             return msg.ToString();
         }
 
         /// <summary>
-        /// The ToNull
+        /// Make object Null
         /// </summary>
-        /// <param name="_">The _<see cref="object"/></param>
+        /// <param name="_"> _<see cref="object"/></param>
         /// <returns>The <see cref="object"/></returns>
         public static object ToNull(this object _) => null;
 
         /// <summary>
-        /// The ToUrlSlug
+        /// Make  Url Slug
         /// </summary>
         /// <param name="value">The value<see cref="string"/></param>
         /// <returns>The <see cref="string"/></returns>
@@ -622,14 +630,14 @@ namespace System
             //Trim dashes from end 
             value = value.Trim('-', '_');
 
-            //Replace double occurences of - or \_ 
+            //Replace double occurrences of - or \_ 
             value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
 
             return value;
         }
 
         /// <summary>
-        /// Split Camel Case string to space delimated
+        /// Split Camel Case string to space delimited
         /// </summary>
         /// <param name="source">The source<see cref="string"/></param>
         /// <returns>spited string array</returns>
