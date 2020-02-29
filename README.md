@@ -18,6 +18,7 @@ Common C# Extensions for Developers
   - [IfIs\`\`1(target,method)](#M-System-CommonExtensions-IfIs``1-System-Object,System-Action{``0}- 'System.CommonExtensions.IfIs``1(System.Object,System.Action{``0})')
   - [IfIs\`\`2(target,method)](#M-System-CommonExtensions-IfIs``2-System-Object,System-Func{``0,``1}- 'System.CommonExtensions.IfIs``2(System.Object,System.Func{``0,``1})')
   - [IfNotNull\`\`2(source,selector)](#M-System-CommonExtensions-IfNotNull``2-``0,System-Func{``0,``1}- 'System.CommonExtensions.IfNotNull``2(``0,System.Func{``0,``1})')
+  - [ImplementsInterfaces(obj,interfaces)](#M-System-CommonExtensions-ImplementsInterfaces-System-Object,System-Collections-Generic-List{System-Type}- 'System.CommonExtensions.ImplementsInterfaces(System.Object,System.Collections.Generic.List{System.Type})')
   - [In(value,stringValues)](#M-System-CommonExtensions-In-System-String,System-String[]- 'System.CommonExtensions.In(System.String,System.String[])')
   - [In\`\`1(source,list)](#M-System-CommonExtensions-In``1-``0,``0[]- 'System.CommonExtensions.In``1(``0,``0[])')
   - [IsDecimal(input)](#M-System-CommonExtensions-IsDecimal-System-String- 'System.CommonExtensions.IsDecimal(System.String)')
@@ -29,10 +30,10 @@ Common C# Extensions for Developers
   - [IsSet(input)](#M-System-CommonExtensions-IsSet-System-String- 'System.CommonExtensions.IsSet(System.String)')
   - [Left(value,length)](#M-System-CommonExtensions-Left-System-String,System-Int32- 'System.CommonExtensions.Left(System.String,System.Int32)')
   - [Like(value,search)](#M-System-CommonExtensions-Like-System-String,System-String- 'System.CommonExtensions.Like(System.String,System.String)')
-  - [ReferenceEquals(objA,objB)](#M-System-CommonExtensions-ReferenceEquals-System-Object,System-Object- 'System.CommonExtensions.ReferenceEquals(System.Object,System.Object)')
+  - [ReferenceEqualsEx(objA,objB)](#M-System-CommonExtensions-ReferenceEqualsEx-System-Object,System-Object- 'System.CommonExtensions.ReferenceEqualsEx(System.Object,System.Object)')
   - [Return\`\`2(value,evaluateFunc)](#M-System-CommonExtensions-Return``2-``0,System-Func{``0,``1}- 'System.CommonExtensions.Return``2(``0,System.Func{``0,``1})')
   - [Right(value,length)](#M-System-CommonExtensions-Right-System-String,System-Int32- 'System.CommonExtensions.Right(System.String,System.Int32)')
-  - [SpinThread\`\`1(parms,action)](#M-System-CommonExtensions-SpinThread``1-``0,System-Action{``0}- 'System.CommonExtensions.SpinThread``1(``0,System.Action{``0})')
+  - [SpinThread\`\`1(params,action)](#M-System-CommonExtensions-SpinThread``1-``0,System-Action{``0}- 'System.CommonExtensions.SpinThread``1(``0,System.Action{``0})')
   - [SplitCamelCase(source)](#M-System-CommonExtensions-SplitCamelCase-System-String- 'System.CommonExtensions.SplitCamelCase(System.String)')
   - [ThrowIf\`\`1(val,predicate,exceptionFunc)](#M-System-CommonExtensions-ThrowIf``1-``0,System-Func{``0,System-Boolean},System-Func{System-Exception}- 'System.CommonExtensions.ThrowIf``1(``0,System.Func{``0,System.Boolean},System.Func{System.Exception})')
   - [ToDecimal(input)](#M-System-CommonExtensions-ToDecimal-System-String- 'System.CommonExtensions.ToDecimal(System.String)')
@@ -115,8 +116,8 @@ The [](#!-T 'T')
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| target | [\`\`0](#T-``0 '``0') | The target[](#!-T 'T') |
-| source | [\`\`0](#T-``0 '``0') | The source[](#!-T 'T') |
+| target | [\`\`0](#T-``0 '``0') | The target |
+| source | [\`\`0](#T-``0 '``0') | The source |
 
 ##### Generic Types
 
@@ -247,7 +248,7 @@ The [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-U
 
 ##### Summary
 
-The GetDefault
+Get Default Value
 
 ##### Returns
 
@@ -281,7 +282,7 @@ The [String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-U
 
 ##### Summary
 
-allows an action to be taken on an object if it is castable as the given type, with no return value.
+allows an action to be taken on an object if it is cast able as the given type, with no return value.
 if the target does not match the type, does nothing
 
 ##### Parameters
@@ -302,7 +303,7 @@ if the target does not match the type, does nothing
 
 ##### Summary
 
-allows an action to be taken on an object if it is castable as the given type, with a return value.
+allows an action to be taken on an object if it is cast-able as the given type, with a return value.
 if the target does not match the type, returns default(T)
 
 ##### Returns
@@ -348,6 +349,26 @@ The selected value when source is not null; null otherwise.
 | T |  |
 | TInner |  |
 
+<a name='M-System-CommonExtensions-ImplementsInterfaces-System-Object,System-Collections-Generic-List{System-Type}-'></a>
+### ImplementsInterfaces(obj,interfaces) `method`
+
+##### Summary
+
+Implements Interfaces
+Determines if a class object implements an interface type and returns a list of types it actually implements.
+If no matching type is found an empty list will be returned.
+
+##### Returns
+
+The [List\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List`1 'System.Collections.Generic.List`1')
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | The obj[Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |
+| interfaces | [System.Collections.Generic.List{System.Type}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{System.Type}') | The interfaces[List\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List`1 'System.Collections.Generic.List`1') |
+
 <a name='M-System-CommonExtensions-In-System-String,System-String[]-'></a>
 ### In(value,stringValues) `method`
 
@@ -384,7 +405,7 @@ The [Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | source | [\`\`0](#T-``0 '``0') | The source[](#!-T 'T') |
-| list | [\`\`0[]](#T-``0[] '``0[]') | The list[](#!-T[] 'T[]') |
+| list | [\`\`0[]](#T-``0[] '``0[]') | The list |
 
 ##### Generic Types
 
@@ -559,12 +580,12 @@ The [Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-
 | value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The value[String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |
 | search | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The search[String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |
 
-<a name='M-System-CommonExtensions-ReferenceEquals-System-Object,System-Object-'></a>
-### ReferenceEquals(objA,objB) `method`
+<a name='M-System-CommonExtensions-ReferenceEqualsEx-System-Object,System-Object-'></a>
+### ReferenceEqualsEx(objA,objB) `method`
 
 ##### Summary
 
-This extension method represents shorthand version of ReferenceEquals method.
+This extension method represents shorthand version of ReferenceEqualsEx method.
 
 ##### Returns
 
@@ -618,10 +639,10 @@ Returns string from right
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | String value |
-| length | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Max number of charaters to return |
+| length | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Max number of characters to return |
 
 <a name='M-System-CommonExtensions-SpinThread``1-``0,System-Action{``0}-'></a>
-### SpinThread\`\`1(parms,action) `method`
+### SpinThread\`\`1(params,action) `method`
 
 ##### Summary
 
@@ -635,7 +656,7 @@ that the contents of the action are exclusive to the scope of the action, but th
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| parms | [\`\`0](#T-``0 '``0') | The parms[](#!-T 'T') |
+| params | [\`\`0](#T-``0 '``0') | The params[](#!-T 'T') |
 | action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action[Action\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action`1 'System.Action`1') |
 
 ##### Generic Types
@@ -677,7 +698,7 @@ T object to throw exception [](#!-T 'T')
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | val | [\`\`0](#T-``0 '``0') | The val[](#!-T 'T') |
-| predicate | [System.Func{\`\`0,System.Boolean}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Boolean}') | The predicate[](#!-Func<T, bool> 'Func<T, bool>') |
+| predicate | [System.Func{\`\`0,System.Boolean}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Boolean}') | The predicate |
 | exceptionFunc | [System.Func{System.Exception}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{System.Exception}') | The exceptionFunc[Func\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func`1 'System.Func`1') |
 
 ##### Generic Types
@@ -748,7 +769,7 @@ Returns enum object
 
 ##### Summary
 
-The ToInt
+Converts string to Int
 
 ##### Returns
 
@@ -767,7 +788,7 @@ The [Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US
 
 Creates a log-string from the Exception.
 
-The result includes the stacktrace, innerexception et cetera, separated by .
+The result includes the stacktrace, inner-exception et crater, separated by .
 
 ##### Returns
 
