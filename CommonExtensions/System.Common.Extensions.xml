@@ -270,8 +270,8 @@ Max number of charaters to return</param>
     <member name="M:System.CommonExtensions.SpinThread``1(``0,System.Action{``0})">
       <summary>
 Spins up and executes the action within a thread. Basically fire and forget. Real big question here. Does anybody see any issues with thread management? I would like to update this with any code necessary to manage thread cleanup if necessary. I realize that this has the ability to create unsafe thread referencing if not written such that the contents of the action are exclusive to the scope of the action, but that is outside the purview of this extension</summary>
-      <param name="parms">
-The parms<see cref="T" /></param>
+      <param name="params">
+The params<see cref="T" /></param>
       <param name="action">
 The action<see cref="Action{T}" /></param>
     </member>
