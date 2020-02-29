@@ -1,6 +1,7 @@
 ﻿// ReSharper disable All
 namespace System
 {
+    using ComponentModel;
     using Collections.Generic;
     using Data.SqlTypes;
     using Diagnostics;
@@ -25,6 +26,7 @@ namespace System
         /// <returns>
         /// The <see cref="string" />
         /// </returns>
+        [Description("Make Readable string Dirty")]
         public static string DeHumanize(this string humanized, string delimiter = "") => humanized.Replace(" ", delimiter);
 
         /// <summary>
@@ -38,7 +40,7 @@ namespace System
         /// <param name="this">IEnumerable.</param>
         /// <param name="keySelector"> key selector.</param>
         /// <returns></returns>
-        [ComponentModel.Description("Provides a Distinct method that takes a key selector lambda as parameter. The .net framework only provides a Distinct method that takes an instance of an implementation of IEqualityComparer where the standard parameter less Distinct that uses the default equality comparer doesn't suffice.")]
+        [Description("Provides a Distinct method that takes a key selector lambda as parameter. The .net framework only provides a Distinct method that takes an instance of an implementation of IEqualityComparer where the standard parameter less Distinct that uses the default equality comparer doesn't suffice.")]
         public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> @this, Func<T, TKey> keySelector) => @this.GroupBy(keySelector).Select(rps => rps).Select(e => e.First());
 
         
@@ -52,7 +54,7 @@ namespace System
         /// <returns>
         /// The <see cref="T" />
         /// </returns>
-        [ComponentModel.Description("An extension function to work like the extend method of javascript. It takes the object and merge with oder, but only if the property of the other object has value.")]
+        [Description("An extension function to work like the extend method of javascript. It takes the object and merge with oder, but only if the property of the other object has value.")]
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         public static T Extend<T>(this T target, T source) where T : class
         {
@@ -80,7 +82,7 @@ namespace System
         /// </summary>
         /// <param name="task">The task<see cref="ValueTask"/></param>
         /// <returns>The <see cref="ConfiguredValueTaskAwaitable"/></returns>
-        [ComponentModel.Description("The ForAwait")]
+        [Description("The ForAwait")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ConfiguredValueTaskAwaitable ForAwait(this in ValueTask task) => task.ConfigureAwait(false);
 
@@ -90,7 +92,7 @@ namespace System
         /// <typeparam name="T"></typeparam>
         /// <param name="task">The task<see cref="ValueTask{T}"/></param>
         /// <returns>The <see cref="ConfiguredValueTaskAwaitable{T}"/></returns>
-        [ComponentModel.Description("The ForAwait")]
+        [Description("The ForAwait")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ConfiguredValueTaskAwaitable<T> ForAwait<T>(this in ValueTask<T> task) => task.ConfigureAwait(false);
 
@@ -99,7 +101,7 @@ namespace System
         /// </summary>
         /// <param name="task">The task<see cref="Task"/></param>
         /// <returns>The <see cref="ConfiguredTaskAwaitable"/></returns>
-        [ComponentModel.Description("The ForAwait")]
+        [Description("The ForAwait")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ConfiguredTaskAwaitable ForAwait(this Task task) => task.ConfigureAwait(false);
 
@@ -109,7 +111,7 @@ namespace System
         /// <typeparam name="T"></typeparam>
         /// <param name="task">The task<see cref="Task{T}"/></param>
         /// <returns>The <see cref="ConfiguredTaskAwaitable{T}"/></returns>
-        [ComponentModel.Description("The ForAwait")]
+        [Description("The ForAwait")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ConfiguredTaskAwaitable<T> ForAwait<T>(this Task<T> task) => task.ConfigureAwait(false);
 
@@ -120,7 +122,7 @@ namespace System
         /// <param name="value">A composite format string</param>
         /// <param name="arg0">An System.Object to format</param>
         /// <returns>The <see cref="string"/></returns>
-        [ComponentModel.Description("Replaces the format item in a specified System.String with the text equivalent  of the value of a specified System.Object instance.")]
+        [Description("Replaces the format item in a specified System.String with the text equivalent  of the value of a specified System.Object instance.")]
         public static string Format(this string value, object arg0)
         {
             return string.Format(value, arg0);
@@ -133,7 +135,7 @@ namespace System
         /// <param name="value">A composite format string</param>
         /// <param name="args">An System.Object array containing zero or more objects to format.</param>
         /// <returns>The <see cref="string"/></returns>
-        [ComponentModel.Description("Replaces the format item in a specified System.String with the text equivalent  of the value of a specified System.Object instance.")]
+        [Description("Replaces the format item in a specified System.String with the text equivalent  of the value of a specified System.Object instance.")]
         public static string Format(this string value, params object[] args)
         {
             return string.Format(value, args);
@@ -144,7 +146,7 @@ namespace System
         /// </summary>
         /// <param name="type">The type<see cref="Type"/></param>
         /// <returns>The <see cref="object"/></returns>
-        [ComponentModel.Description("Get Default Value")]
+        [Description("Get Default Value")]
         private static object GetDefault(this Type type)
         {
             // If no Type was supplied, if the Type was a reference type, or if the Type was a System.Void, return null
@@ -190,7 +192,7 @@ namespace System
         /// </summary>
         /// <param name="value">The value<see cref="string"/></param>
         /// <returns>The <see cref="string"/></returns>
-        [ComponentModel.Description("Human Readable string")]
+        [Description("Human Readable string")]
         public static string Humanize(this string value) => string.Join(" ", value.SplitCamelCase());
 
         /// <summary>
@@ -200,7 +202,7 @@ namespace System
         /// <typeparam name="T"></typeparam>
         /// <param name="target">The target<see cref="object"/></param>
         /// <param name="method">The method<see cref="Action{T}"/></param>
-        [ComponentModel.Description("allows an action to be taken on an object if it is castable as the given type, with no return value. if the target does not match the type, does nothing")]
+        [Description("allows an action to be taken on an object if it is castable as the given type, with no return value. if the target does not match the type, does nothing")]
         public static void IfIs<T>(this object target, Action<T> method)
             where T : class
         {
@@ -275,7 +277,7 @@ namespace System
         /// <param name="value">The value<see cref="string"/></param>
         /// <param name="stringValues">Array of string values to compare</param>
         /// <returns>Return true if any string value matches</returns>
-        [ComponentModel.Description("Checks string object's value to array of string values")]
+        [Description("Checks string object's value to array of string values")]
         public static bool In(this string value, params string[] stringValues) => stringValues.Where(otherValue => string.CompareOrdinal(value, otherValue) == 0).Select(otherValue => new { }).Any();
 
 
@@ -306,7 +308,7 @@ namespace System
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        [ComponentModel.Description("Check string IsDouble")]
+        [Description("Check string IsDouble")]
         public static bool IsDouble(this string input) => input.IsSet() && double.TryParse(input, out _);
 
         /// <summary>
@@ -314,7 +316,7 @@ namespace System
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        [ComponentModel.Description("Check string IsInt")]
+        [Description("Check string IsInt")]
         public static bool IsInt(this string input) => input.IsSet() && int.TryParse(input, out _);
 
         /// <summary>
@@ -322,7 +324,7 @@ namespace System
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        [ComponentModel.Description("Check if Input string is not null or whitespace")]
+        [Description("Check if Input string is not null or whitespace")]
         public static bool IsNotNull(this string input) => !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
 
         
@@ -333,7 +335,7 @@ namespace System
         /// <typeparam name="T"></typeparam>
         /// <param name="me">The me<see cref="T"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        [ComponentModel.Description("Check  IsNull")]
+        [Description("Check  IsNull")]
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         [DebuggerStepThrough]
         public static bool IsNull<T>(this T me)
@@ -352,7 +354,7 @@ namespace System
         /// <typeparam name="T">Where T is struct</typeparam>
         /// <param name="me">Struct need to check is null<see cref="T"/></param>
         /// <returns>True or False <see cref="bool"/></returns>
-        [ComponentModel.Description("Check IsNull")]
+        [Description("Check IsNull")]
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         [DebuggerStepThrough]
         public static bool IsNull<T>(this T? me) where T : struct => !me.HasValue;
@@ -362,7 +364,7 @@ namespace System
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>True or False <see cref="bool"/></returns>
-        [ComponentModel.Description("Check if string is null or empty")]
+        [Description("Check if string is null or empty")]
         public static bool IsSet(this string input) => !(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
 
         /// <summary>
@@ -371,7 +373,7 @@ namespace System
         /// <param name="value">String value</param>
         /// <param name="length">Max number of characters to return</param>
         /// <returns>Returns string from left</returns>
-        [ComponentModel.Description("Returns characters from left of specified length")]
+        [Description("Returns characters from left of specified length")]
         public static string Left(this string value, int length) => value != null && value.Length > length ? value.Substring(0, length) : value;
 
         /// <summary>
@@ -380,7 +382,7 @@ namespace System
         /// <param name="value">The value<see cref="string"/></param>
         /// <param name="search">The search<see cref="string"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        [ComponentModel.Description("An C# extension method based on LIKE operator of T-SQL.")]
+        [Description("An C# extension method based on LIKE operator of T-SQL.")]
         public static bool Like(this string value, string search) => value.Contains(search) || value.StartsWith(search) || value.EndsWith(search);
 
         /// <summary>
@@ -389,7 +391,7 @@ namespace System
         /// <param name="objA">The objA<see cref="object"/></param>
         /// <param name="objB">The objB<see cref="object"/></param>
         /// <returns>The <see cref="bool"/></returns>
-        [ComponentModel.Description("This extension method represents shorthand version of ReferenceEqualsEx method.")]
+        [Description("This extension method represents shorthand version of ReferenceEqualsEx method.")]
         private static bool ReferenceEqualsEx(this object objA, object objB) => ReferenceEquals(objA, objB);
 
         
@@ -403,7 +405,7 @@ namespace System
         /// <param name="value">The value<see cref="TIn"/></param>
         /// <param name="evaluateFunc">The evaluateFunc<see cref="Func{TIn, TOut}"/></param>
         /// <returns>The <see cref="TOut"/></returns>
-        [ComponentModel.Description("Returns a value based on an provided value and evaluation function")]
+        [Description("Returns a value based on an provided value and evaluation function")]
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         public static TOut Return<TIn, TOut>(this TIn value, Func<TIn, TOut> evaluateFunc) => evaluateFunc(value);
@@ -414,7 +416,7 @@ namespace System
         /// <param name="value">String value</param>
         /// <param name="length">Max number of characters to return</param>
         /// <returns>Returns string from right</returns>
-        [ComponentModel.Description("Returns characters from right of specified length")]
+        [Description("Returns characters from right of specified length")]
         public static string Right(this string value, int length) => value != null && value.Length > length ? value.Substring(value.Length - length) : value;
 
         
@@ -429,7 +431,7 @@ namespace System
         /// <typeparam name="T"></typeparam>
         /// <param name="params">The params<see cref="T"/></param>
         /// <param name="action">The action<see cref="Action{T}"/></param>
-        [ComponentModel.Description("Spins up and executes the action within a thread. Basically fire and forget. Real big question here. Does anybody see any issues with thread management? I would like to update this with any code necessary to manage thread cleanup if necessary. I realize that this has the ability to create unsafe thread referencing if not written such that the contents of the action are exclusive to the scope of the action, but that is outside the purview of this extension")]
+        [Description("Spins up and executes the action within a thread. Basically fire and forget. Real big question here. Does anybody see any issues with thread management? I would like to update this with any code necessary to manage thread cleanup if necessary. I realize that this has the ability to create unsafe thread referencing if not written such that the contents of the action are exclusive to the scope of the action, but that is outside the purview of this extension")]
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         public static void SpinThread<T>(this T @params, Action<T> action) => new Thread(p => action((T)p))
         {
@@ -467,7 +469,7 @@ namespace System
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="decimal"/></returns>
-        [ComponentModel.Description("Converts string to  ToDecimal")]
+        [Description("Converts string to  ToDecimal")]
         public static decimal ToDecimal(this string input) => input.IsDecimal() ? decimal.Parse(input) : 0;
 
         /// <summary>
@@ -475,7 +477,7 @@ namespace System
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="double"/></returns>
-        [ComponentModel.Description("Converts string to  ToDouble")]
+        [Description("Converts string to  ToDouble")]
         public static double ToDouble(this string input) => input.IsDecimal() ? double.Parse(input) : 0D;
 
         /// <summary>
@@ -484,7 +486,7 @@ namespace System
         /// <typeparam name="T">Type of enum</typeparam>
         /// <param name="value">String value to convert</param>
         /// <returns>Returns enum object</returns>
-        [ComponentModel.Description("Converts string to enum object")]
+        [Description("Converts string to enum object")]
         public static T ToEnum<T>(this string value)
             where T : struct =>
             (T)Enum.Parse(typeof(T), value, true);
@@ -494,7 +496,7 @@ namespace System
         /// </summary>
         /// <param name="input">The input<see cref="string"/></param>
         /// <returns>The <see cref="int"/></returns>
-        [ComponentModel.Description("Converts string to Int")]
+        [Description("Converts string to Int")]
         public static int ToInt(this string input) => input.IsInt() ? int.Parse(input) : 0;
 
         /// <summary>
@@ -611,7 +613,7 @@ namespace System
         /// </summary>
         /// <param name="source">The source<see cref="string"/></param>
         /// <returns>spited string array</returns>
-        [ComponentModel.Description("Split Camel Case string to space delimited")]
+        [Description("Split Camel Case string to space delimited")]
         private static string[] SplitCamelCase(this string source) => Regex.Split(source, @"(?<!^)(?=[A-Z])");
     }
 }
